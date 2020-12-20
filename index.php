@@ -39,8 +39,11 @@
                     
                     // Attempt select query execution
                     $sql = "SELECT * FROM employees";
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
+                     // Executing and getting results
+                    $mysqli_result = mysqli_query($link, $sql); 
+                    // Checking results
+                    if($mysqli_result){
+                        if(mysqli_num_rows($mysqli_result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
@@ -52,13 +55,15 @@
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
+                                // Fetching each row from results and displaying
+                                while($row = mysqli_fetch_array($mysqli_result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['address'] . "</td>";
                                         echo "<td>" . $row['salary'] . "</td>";
                                         echo "<td>";
+                                        // Adding links for Read, Update and Delete records. Images are coming from bootstrap CSS
                                             echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                                             echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
@@ -68,7 +73,7 @@
                                 echo "</tbody>";                            
                             echo "</table>";
                             // Free result set
-                            mysqli_free_result($result);
+                            mysqli_free_result($mysqli_result);
                         } else{
                             echo "<p class='lead'><em>No records were found.</em></p>";
                         }

@@ -40,7 +40,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($name_err) && empty($address_err) && empty($salary_err)){
         // Prepare an insert statement
         $sql = "INSERT INTO employees (name, address, salary) VALUES ('$name', '$address', '$salary')";
+        // Executing and getting results
         $mysqli_result = mysqli_query($link, $sql); 
+        // Checking results
         if($mysqli_result){
                 // Records created successfully. Redirect to landing page
                 header("location: index.php");
@@ -49,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Something went wrong. Please try again later.";
         }
     }
-    // Close connection - coding best practice 
+    // Close connection - best practice 
     mysqli_close($link);
 }
 ?>

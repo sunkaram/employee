@@ -42,76 +42,52 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Check input errors before inserting in database
     if(empty($name_err) && empty($address_err) && empty($salary_err)){
         // Prepare an update statement
-        $sql = "UPDATE employees SET name=?, address=?, salary=? WHERE id=?";
-         
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
-            
-            // Set parameters
-            $param_name = $name;
-            $param_address = $address;
-            $param_salary = $salary;
-            $param_id = $id;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+        $sql = "UPDATE employees SET name='$name', address='$address', salary='$salary' WHERE id='$id'";
+        // Executing and getting results
+        $mysqli_result = mysqli_query($link, $sql); 
+        // Checking results
+        if($mysqli_result){
                 // Records updated successfully. Redirect to landing page
                 header("location: index.php");
                 exit();
-            } else{
-                echo "Something went wrong. Please try again later.";
-            }
+        } else{
+            echo "Something went wrong. Please try again later.";
         }
-         
-        // Close statement
-        mysqli_stmt_close($stmt);
     }
     
-    // Close connection
+    // Close connection - best practice
     mysqli_close($link);
-} else{
+} else {
     // Check existence of id parameter before processing further
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         // Get URL parameter
         $id =  trim($_GET["id"]);
         
         // Prepare a select statement
-        $sql = "SELECT * FROM employees WHERE id = ?";
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "i", $param_id);
-            
-            // Set parameters
-            $param_id = $id;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                $result = mysqli_stmt_get_result($stmt);
-    
-                if(mysqli_num_rows($result) == 1){
-                    /* Fetch result row as an associative array. Since the result set
-                    contains only one row, we don't need to use while loop */
-                    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $sql = "SELECT * FROM employees WHERE id = '$id'";
+        // Executing and getting results
+        $mysqli_result = mysqli_query($link, $sql); 
+        // Checking results
+        if($mysqli_result){
+            if(mysqli_num_rows($mysqli_result) == 1){
+                /* Fetch result row as an associative array. Since the result set
+                contains only one row, we don't need to use while loop */
+                $row = mysqli_fetch_array($mysqli_result, MYSQLI_ASSOC);
                     
-                    // Retrieve individual field value
-                    $name = $row["name"];
-                    $address = $row["address"];
-                    $salary = $row["salary"];
-                } else{
-                    // URL doesn't contain valid id. Redirect to error page
-                    header("location: error.php");
-                    exit();
-                }
-                
+                // Retrieve individual field value
+                $name = $row["name"];
+                $address = $row["address"];
+                $salary = $row["salary"];
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                // URL doesn't contain valid id. Redirect to error page
+                header("location: error.php");
+                exit();
             }
+                
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
         }
-        
-        // Close statement
-        mysqli_stmt_close($stmt);
-        
+
         // Close connection
         mysqli_close($link);
     }  else{
@@ -144,7 +120,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <h2>Update Record</h2>
                     </div>
                     <p>Please edit the input values and submit to update the record.</p>
-                    <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                    <form action="update.php" method="post">
                         <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                             <label>Name</label>
                             <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
