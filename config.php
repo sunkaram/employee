@@ -6,7 +6,7 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_NAME', 'employee_db');
  
-/* Attempt to connect to MySQL database */
+/* Attempt to connect to MySQL database - Modified by Lavanya*/
 $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
  
 // Check connection
