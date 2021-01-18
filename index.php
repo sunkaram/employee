@@ -11,6 +11,7 @@
             width: 650px;
             margin: 0 auto;
         }
+        // Changes
         .page-header h2{
             margin-top: 0;
         }
