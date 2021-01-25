@@ -11,7 +11,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Checking result
     if($mysqli_result){
         if(mysqli_num_rows($mysqli_result) == 1){
-            /* Fetch result row as an associative array. Since the result set
+            /* Fetch result row as an associative array. Since the result set //Modified by Sreeja
             contains only one row, we don't need to use while loop */
             $row = mysqli_fetch_array($mysqli_result, MYSQLI_ASSOC);
                 
